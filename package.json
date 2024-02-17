@@ -14,5 +14,8 @@
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "react-windowed-select": "^5.2.0"
+  }
 }
