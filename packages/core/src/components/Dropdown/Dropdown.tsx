@@ -373,7 +373,7 @@ const Dropdown: VibeComponent<DropdownComponentProps, HTMLDivElement> = forwardR
 
     const inlineStyles = useMemo(() => {
       // We first want to get the default stylized groups (e.g. "container", "menu").
-      const baseStyles = generateBaseStyles({
+      const baseStyles: any = generateBaseStyles({
         size,
         rtl,
         insideOverflowContainer,
@@ -394,13 +394,13 @@ const Dropdown: VibeComponent<DropdownComponentProps, HTMLDivElement> = forwardR
             return stylesFn(provided, state);
           }
         };
-      }, {});
+      }, {} as any);
 
       if (multi) {
         if (multiline) {
           Object.values(ADD_AUTO_HEIGHT_COMPONENTS).forEach(component => {
             const original = mergedStyles[component];
-            mergedStyles[component] = (provided, state) => ({
+            mergedStyles[component] = (provided: any, state: any) => ({
               ...original(provided, state),
               height: "auto"
             });
@@ -408,7 +408,7 @@ const Dropdown: VibeComponent<DropdownComponentProps, HTMLDivElement> = forwardR
         }
 
         const originalValueContainer = mergedStyles.valueContainer;
-        mergedStyles.valueContainer = (provided, state) => ({
+        mergedStyles.valueContainer = (provided: any, state: any) => ({
           ...originalValueContainer(provided, state),
           paddingLeft: 6
         });

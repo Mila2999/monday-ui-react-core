@@ -1,31 +1,31 @@
 /* eslint-disable no-param-reassign */
-import { SIZES } from "../../constants/sizes";
+import { Sizes } from "../../constants/sizes";
 import { getCSSVar } from "../../services/themes";
 import { getScrollableParent } from "../../utils/dom-utils";
 
-const getSizeInPx = size => {
+const getSizeInPx = (size: Sizes) => {
   switch (size) {
-    case SIZES.LARGE:
+    case Sizes.LARGE:
       return 48;
-    case SIZES.MEDIUM:
+    case Sizes.MEDIUM:
       return 40;
-    case SIZES.SMALL:
+    case Sizes.SMALL:
     default:
       return 32;
   }
 };
 
-const getSize = size => {
+const getSize = (size: Sizes) => {
   const selectedSize = getSizeInPx(size);
   return { height: `${selectedSize}px` };
 };
 
-const getInnerSize = size => {
+const getInnerSize = (size: Sizes) => {
   const selectedSize = getSizeInPx(size) - 2;
   return { height: `${selectedSize}px` };
 };
 
-const getIndicatorBoxSize = size => {
+const getIndicatorBoxSize = (size: Sizes) => {
   const selectedSize = getSizeInPx(size) - 8;
   return {
     height: `${selectedSize}px`,
@@ -39,9 +39,12 @@ const getColor = () => {
   return { color, backgroundColor };
 };
 
-const getFont = size => ({ fontSize: getSingleValueTextSize(size), lineHeight: getSingleValueTextSize(size) });
+const getFont = (size?: Sizes) => ({
+  fontSize: getSingleValueTextSize(size),
+  lineHeight: getSingleValueTextSize(size)
+});
 
-const disabledContainerStyle = isDisabled => {
+const disabledContainerStyle = (isDisabled: boolean) => {
   if (!isDisabled) return {};
   return {
     backgroundColor: getCSSVar("disabled-background-color"),
@@ -58,7 +61,7 @@ const disabledContainerStyle = isDisabled => {
   };
 };
 
-const readOnlyContainerStyle = readOnly => {
+const readOnlyContainerStyle = (readOnly: boolean) => {
   if (!readOnly) return {};
   return {
     border: "hidden"
@@ -66,7 +69,7 @@ const readOnlyContainerStyle = readOnly => {
 };
 
 // TODO: unite backgroundColor style with `readOnlyContainerStyle` in next major [breaking]
-const readOnlyStyle = isReadOnly => {
+const readOnlyStyle = (isReadOnly: boolean) => {
   if (!isReadOnly) {
     return {};
   }
@@ -75,7 +78,18 @@ const readOnlyStyle = isReadOnly => {
   };
 };
 
-const getOptionStyle = (provided, { isDisabled, isSelected, isFocused }) => {
+const getOptionStyle = (
+  provided: any,
+  {
+    isDisabled,
+    isSelected,
+    isFocused
+  }: {
+    isDisabled: boolean;
+    isSelected: boolean;
+    isFocused: boolean;
+  }
+) => {
   delete provided[":active"];
   delete provided.width;
   const general = {
@@ -124,8 +138,8 @@ const getOptionStyle = (provided, { isDisabled, isSelected, isFocused }) => {
 };
 
 const container =
-  ({ size }) =>
-  (provided, { isDisabled, selectProps }) => {
+  ({ size }: { size: Sizes }) =>
+  (provided: any, { isDisabled, selectProps }: { isDisabled: boolean; selectProps: any }) => {
     const { readOnly } = selectProps;
     delete provided.pointerEvents;
     return {
@@ -150,8 +164,8 @@ const container =
   };
 
 const control =
-  ({ size }) =>
-  (provided, { isDisabled, selectProps }) => {
+  ({ size }: { size: Sizes }) =>
+  (provided: any, { isDisabled, selectProps }: { isDisabled: boolean; selectProps: any }) => {
     const { readOnly } = selectProps;
     return {
       ...provided,
@@ -177,7 +191,7 @@ const control =
 
 const placeholder =
   () =>
-  (provided, { isDisabled }) => ({
+  (provided: any, { isDisabled }: { isDisabled: boolean }) => ({
     ...provided,
     ...getFont(),
     color: isDisabled ? getCSSVar("disabled-text-color") : getCSSVar("secondary-text-color"),
@@ -185,8 +199,8 @@ const placeholder =
   });
 
 const indicatorsContainer =
-  ({ size }) =>
-  (provided, { isDisabled }) => ({
+  ({ size }: { size: Sizes }) =>
+  (provided: any, { isDisabled }: { isDisabled: boolean }) => ({
     ...provided,
     ...getFont(),
     ...getColor(),
@@ -196,8 +210,8 @@ const indicatorsContainer =
   });
 
 const dropdownIndicator =
-  ({ size }) =>
-  (provided, { selectProps, isDisabled }) => {
+  ({ size }: { size: Sizes }) =>
+  (provided: any, { selectProps, isDisabled }: { selectProps: any; isDisabled: boolean }) => {
     const { menuIsOpen, readOnly } = selectProps;
     return {
       ...provided,
@@ -222,7 +236,7 @@ const dropdownIndicator =
   };
 
 const clearIndicator =
-  ({ size }) =>
+  ({ size }: { size: Sizes }) =>
   () => ({
     display: "flex",
     alignItems: "center",
@@ -236,7 +250,7 @@ const clearIndicator =
     }
   });
 
-const menuOpenOpacity = ({ menuIsOpen }) => {
+const menuOpenOpacity = ({ menuIsOpen }: { menuIsOpen: boolean }) => {
   if (menuIsOpen) {
     return {
       opacity: 0.6
@@ -246,7 +260,7 @@ const menuOpenOpacity = ({ menuIsOpen }) => {
 
 const singleValue =
   () =>
-  (provided, { isDisabled, selectProps }) => {
+  (provided: any, { isDisabled, selectProps }: { isDisabled: boolean; selectProps: any }) => {
     const { readOnly, withReadOnlyStyle } = selectProps;
     const readOnlyProps = readOnly
       ? {
@@ -269,19 +283,19 @@ const singleValue =
     };
   };
 
-function getSingleValueTextSize(size) {
+function getSingleValueTextSize(size?: Sizes) {
   switch (size) {
-    case SIZES.LARGE:
+    case Sizes.LARGE:
       return "16px";
-    case SIZES.MEDIUM:
+    case Sizes.MEDIUM:
       return "16px";
-    case SIZES.SMALL:
+    case Sizes.SMALL:
     default:
       return "14px";
   }
 }
 
-const input = () => provided => ({
+const input = () => (provided: any) => ({
   ...provided,
   ...getFont(),
   ...getColor(),
@@ -291,7 +305,7 @@ const input = () => provided => ({
 });
 
 // 12px - because we have inner 4px
-const getCenterContentStyle = rtl => {
+const getCenterContentStyle = (rtl: boolean) => {
   return {
     display: "flex",
     alignItems: "center",
@@ -300,8 +314,20 @@ const getCenterContentStyle = rtl => {
 };
 
 const valueContainer =
-  ({ size, rtl }) =>
-  (provided, { isDisabled, selectProps: { withReadOnlyStyle, readOnly } }) => ({
+  ({ size, rtl }: { size: Sizes; rtl: boolean }) =>
+  (
+    provided: any,
+    {
+      isDisabled,
+      selectProps: { withReadOnlyStyle, readOnly }
+    }: {
+      isDisabled: boolean;
+      selectProps: {
+        withReadOnlyStyle: boolean;
+        readOnly: boolean;
+      };
+    }
+  ) => ({
     ...provided,
     ...getCenterContentStyle(rtl),
     ...getFont(),
@@ -313,8 +339,16 @@ const valueContainer =
   });
 
 const menu =
-  ({ controlRef, insideOverflowContainer, insideOverflowWithTransformContainer }) =>
-  provided => {
+  ({
+    controlRef,
+    insideOverflowContainer,
+    insideOverflowWithTransformContainer
+  }: {
+    controlRef: any;
+    insideOverflowContainer: any;
+    insideOverflowWithTransformContainer: any;
+  }) =>
+  (provided: any) => {
     const baseStyle = {
       ...provided,
       ...getFont(),
@@ -349,7 +383,7 @@ const menu =
     return baseStyle;
   };
 
-const option = () => (provided, state) => ({
+const option = () => (provided: any, state: any) => ({
   ...getFont(),
   ...getOptionStyle(provided, state)
 });
@@ -373,19 +407,19 @@ const groupHeading = () => () => ({
   color: getCSSVar("secondary-text-color")
 });
 
-export const getIndicatorSize = size => {
+export const getIndicatorSize = (size: Sizes) => {
   switch (size) {
-    case SIZES.LARGE:
+    case Sizes.LARGE:
       return "20px";
-    case SIZES.MEDIUM:
+    case Sizes.MEDIUM:
       return "20px";
-    case SIZES.SMALL:
+    case Sizes.SMALL:
     default:
       return "16px";
   }
 };
 
-export const customTheme = theme => ({
+export const customTheme = (theme: any) => ({
   ...theme,
   borderRadius: getCSSVar("border-radius-small"),
   colors: {
@@ -394,19 +428,19 @@ export const customTheme = theme => ({
   }
 });
 
-export default data => ({
+export default (data: any) => ({
   container: container(data),
   control: control(data),
-  placeholder: placeholder(data),
+  placeholder: placeholder(),
   indicatorsContainer: indicatorsContainer(data),
   dropdownIndicator: dropdownIndicator(data),
   clearIndicator: clearIndicator(data),
-  singleValue: singleValue(data),
-  input: input(data),
+  singleValue: singleValue(),
+  input: input(),
   valueContainer: valueContainer(data),
   menu: menu(data),
-  option: option(data),
-  indicatorSeparator: indicatorSeparator(data),
-  group: group(data),
-  groupHeading: groupHeading(data)
+  option: option(),
+  indicatorSeparator: indicatorSeparator(),
+  group: group(),
+  groupHeading: groupHeading()
 });
