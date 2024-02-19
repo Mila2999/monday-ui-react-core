@@ -57,11 +57,11 @@ export interface DropdownComponentProps extends VibeComponentProps {
   /**
    * Called when menu is opened
    */
-  onMenuOpen?: (...args: unknown[]) => unknown;
+  onMenuOpen?: () => void;
   /**
    * Called when menu is closed
    */
-  onMenuClose?: (...args: unknown[]) => unknown;
+  onMenuClose?: () => void;
   /**
    * Called when key is pressed in the dropdown
    */
@@ -150,7 +150,7 @@ export interface DropdownComponentProps extends VibeComponentProps {
   /**
    * If provided Dropdown will work in async mode. Can be either promise or callback
    */
-  asyncOptions: Promise<void> | ((...args: unknown[]) => unknown);
+  asyncOptions: any;
   /**
    * If set to true, fetched async options will be cached
    */
@@ -214,7 +214,7 @@ export interface DropdownComponentProps extends VibeComponentProps {
   /**
   Pass Ref for reference of the actual dropdown component
   */
-  ref: (...args: unknown[]) => unknown;
+  ref: React.ForwardedRef<HTMLDivElement>;
   /**
   The options set by default will be set as mandatory and the user will not be able to cancel their selection
   */
@@ -263,6 +263,7 @@ export interface DropdownComponentProps extends VibeComponentProps {
   onOptionSelect: (...args: unknown[]) => void;
   onClear: (...args: unknown[]) => void;
   popupsContainerSelector: string;
+  selectProps: Record<string, string>;
 }
 
 const Dropdown: VibeComponent<DropdownComponentProps, HTMLDivElement> = forwardRef(
@@ -553,7 +554,7 @@ const Dropdown: VibeComponent<DropdownComponentProps, HTMLDivElement> = forwardR
     return (
       <DropDownComponent
         className={cx(styles.dropdown, className)}
-        selectProps={customProps}
+        // selectProps={customProps}
         components={{
           DropdownIndicator,
           Menu,
@@ -563,21 +564,21 @@ const Dropdown: VibeComponent<DropdownComponentProps, HTMLDivElement> = forwardR
           Control,
           SingleValue,
           ...(multi && {
-            MultiValue: NOOP, // We need it for react-select to behave nice with "multi"
+            MultiValue: NOOP as any, // We need it for react-select to behave nice with "multi"
             ValueContainer: MultiValueContainer
           }),
           ...(isVirtualized && { MenuList: WindowedMenuList })
         }}
         // When inside scroll we set the menu position by js and we can't follow the drop down location while use scrolling
         closeMenuOnScroll={closeMenuOnScroll as unknown as ((event: Event) => boolean) | boolean}
-        size={size}
+        // size={size}
         noOptionsMessage={noOptionsMessage as (obj: { inputValue: string }) => React.ReactNode}
         placeholder={placeholder}
         isDisabled={disabled}
         isClearable={!readOnly && clearable}
         isSearchable={!readOnly && searchable}
-        readOnly={readOnly}
-        withReadOnlyStyle={withReadOnlyStyle}
+        // readOnly={readOnly}
+        // withReadOnlyStyle={withReadOnlyStyle}
         aria-readonly={readOnly}
         aria-label={overrideAriaLabel}
         aria-details={tooltipContent}
@@ -605,8 +606,8 @@ const Dropdown: VibeComponent<DropdownComponentProps, HTMLDivElement> = forwardR
         data-testid={dataTestId || getTestId(ComponentDefaultTestId.DROPDOWN, id)}
         autoFocus={autoFocus}
         closeMenuOnSelect={closeMenuOnSelect}
-        ref={ref}
-        withMandatoryDefaultOptions={withMandatoryDefaultOptions}
+        ref={ref as any}
+        // withMandatoryDefaultOptions={withMandatoryDefaultOptions}
         isOptionSelected={isOptionSelected}
         isLoading={isLoading}
         loadingMessage={loadingMessage}
