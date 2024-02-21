@@ -3,7 +3,7 @@ import { ComponentDefaultTestId, getTestId } from "../../tests/test-ids-utils";
 import cx from "classnames";
 import { BaseSizes, SIZES } from "../../constants/sizes";
 import { forwardRef, useCallback, useMemo, useRef, useState } from "react";
-import Select, { components, createFilter } from "react-select";
+import Select, { MenuProps, OptionsType, components, createFilter } from "react-select";
 import AsyncSelect from "react-select/async";
 import { noop as NOOP } from "lodash-es";
 import { WindowedMenuList } from "react-windowed-select";
@@ -29,6 +29,12 @@ import menuStyles from "./components/menu/menu.module.scss";
 import styles from "./Dropdown.module.scss";
 import { VibeComponent, VibeComponentProps } from "src/types";
 import { IComboboxOption } from "../Combobox/components/ComboboxConstants";
+import { Option } from "react-select/src/filters";
+
+interface CustomMenuProps extends MenuProps<Option, boolean> {
+  Renderer: React.ComponentType;
+  dropdownMenuWrapperClassName: string;
+}
 
 export interface DropdownComponentProps extends VibeComponentProps {
   /**
@@ -418,14 +424,14 @@ const Dropdown: VibeComponent<DropdownComponentProps, HTMLDivElement> = forwardR
     }, [size, rtl, insideOverflowContainer, insideOverflowWithTransformContainer, extraStyles, multi, multiline]);
 
     const Menu = useCallback(
-      (props: any) => (
+      (props: CustomMenuProps) => (
         <MenuComponent {...props} Renderer={menuRenderer} dropdownMenuWrapperClassName={dropdownMenuWrapperClassName} />
       ),
       [dropdownMenuWrapperClassName, menuRenderer]
     );
 
     const DropdownIndicator = useCallback(
-      (props: any) => <DropdownIndicatorComponent {...props} size={size} />,
+      (props: { size: string }) => <DropdownIndicatorComponent {...props} size={size} />,
       [size]
     );
 
