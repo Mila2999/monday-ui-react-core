@@ -214,7 +214,7 @@ export interface DropdownComponentProps extends VibeComponentProps {
   /**
    * ID for the select container
    */
-  id?: DROPDOWN_ID;
+  id?: typeof DROPDOWN_ID;
   /**
    * focusAuto when component mount
    */
@@ -695,7 +695,7 @@ Dropdown.defaultProps = {
   extraStyles: defaultCustomStyles,
   tabIndex: 0,
   onOptionRemove: undefined,
-  id: DROPDOWN_MENU.ID,
+  id: DROPDOWN_ID,
   autoFocus: false,
   closeMenuOnSelect: undefined,
   closeMenuOnScroll: false,
