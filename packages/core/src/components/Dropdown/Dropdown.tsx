@@ -25,7 +25,7 @@ import {
   ADD_AUTO_HEIGHT_COMPONENTS,
   defaultCustomStyles,
   DROPDOWN_CHIP_COLORS,
-  DROPDOWN_MENU,
+  DROPDOWN_ID,
   DROPDOWN_MENU_PLACEMENT,
   DROPDOWN_MENU_POSITION,
   DropdownOption
@@ -214,7 +214,7 @@ export interface DropdownComponentProps extends VibeComponentProps {
   /**
    * ID for the select container
    */
-  id?: DROPDOWN_MENU.ID;
+  id?: DROPDOWN_ID;
   /**
    * focusAuto when component mount
    */
